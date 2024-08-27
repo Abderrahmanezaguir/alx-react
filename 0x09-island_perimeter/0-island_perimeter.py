@@ -1,47 +1,26 @@
 #!/usr/bin/python3
-'''module: 5-island_perimeter
- returns the perimeter of the island based on `grid`
- grid is a list of list of integers:
-    0 represents a water zone
-    1 represents a land zone
-    One cell is a square with side length 1
-    Grid cells are connected horizontally/vertically (not diagonally).
-    Grid is rectangular, width and height don’t exceed 100
-Grid is completely surrounded by water, and there is one island (or nothing).
-The island doesn’t have “lakes”
-    (water inside that isn’t connected to the water around the island).
-'''
+
+""" Function to find perimiter of an island """
 
 
 def island_perimeter(grid):
-    '''
-    computes the perimeter of the island described in the grid.
+    """
+    Input: List of Lists
+    Returns: Perimeter of the island
+    """
+    count = 0
+    row = len(grid)
+    col = len(grid[0]) if row else 0
 
-    args:
-        grid: list of list of integers representing the island.
-
-    returns:
-        the perimeter of the island.
-
-    '''
-    perimeter = 0
-
-    # check for cell in grid
     for i in range(len(grid)):
-        for j in range(len(grid[0])):
-            if grid[i][j] == 1:
-                # check if the cell has water on any of its four sides
-                if i == 0 or grid[i - 1][j] == 0:
-                    perimeter += 1
-                if j == 0 or grid[i][j - 1] == 0:
-                    perimeter += 1
-                if i == len(grid) - 1 or grid[i + 1][j] == 0:
-                    perimeter += 1
-                if j == len(grid[0]) - 1 or grid[i][j + 1] == 0:
-                    perimeter += 1
+        for j in range(len(grid[i])):
 
-    return perimeter
+            idx = [(i - 1, j), (i, j - 1), (i, j + 1), (i + 1, j)]
+            check = [1 if k[0] in range(row) and k[1] in range(col) else 0
+                     for k in idx]
 
+            if grid[i][j]:
+                count += sum([1 if not r or not grid[k[0]][k[1]] else 0
+                              for r, k in zip(check, idx)])
 
-if __name__ == '__main__':
-    print(island_perimeter(grid))
+    return (count)
